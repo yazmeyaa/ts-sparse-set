@@ -36,7 +36,18 @@
   "publishConfig": {
     "access": "public"
   },
-  "keywords": [],
+  "keywords": [
+    "typescript",
+    "sparse-set",
+    "data-structure",
+    "ecs",
+    "entity-component-system",
+    "component-storage",
+    "id-based-collection",
+    "object-pool",
+    "high-performance",
+    "dense-array"
+  ],
   "scripts": {
     "build": "tsc && vite build",
     "lint": "eslint src --ext .ts",

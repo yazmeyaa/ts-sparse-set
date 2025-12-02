@@ -3,16 +3,16 @@
 [![NPM version][npm-image]][npm-url]
 [![Downloads][downloads-image]][downloads-url]
 
-**TS SparseSet** — это высокопроизводительная TypeScript структура данных, реализующая *sparse set*, позволяющая хранить и быстро управлять ID-ориентированными коллекциями и компонентами ECS.
+**TS SparseSet** is a high-performance TypeScript data structure implementing a *sparse set*, enabling fast management of ID-based collections and ECS components.
 
 #### Features
 
-* **O(1) Operations:** `add`, `remove`, `get`, and `has` с плотным хранением элементов.
-* **Dense Storage:** Эффективная плотная память для максимальной производительности и locality.
-* **Swap-Remove:** При удалении элементов массив остаётся компактным.
-* **Reusable Structure:** Может использоваться для ECS-компонентов, сущностей, пулов объектов или других ID-ориентированных коллекций.
-* **Optional Object Pool Integration:** Лёгкая интеграция с пулами объектов для минимизации аллокаций.
-* **TypeScript Native:** Полная типизация и совместимость с современным TS.
+* **O(1) Operations:** `add`, `remove`, `get`, and `has` with dense storage.
+* **Dense Storage:** Efficient memory layout for maximum performance and cache locality.
+* **Swap-Remove:** Maintains a compact dense array after removals.
+* **Reusable Structure:** Suitable for ECS components, entities, object pools, or other ID-based collections.
+* **Optional Object Pool Integration:** Easy integration with object pools to minimize allocations.
+* **TypeScript Native:** Fully typed and compatible with modern TypeScript.
 
 #### Installation
 
@@ -25,29 +25,29 @@ npm install ts-sparse-set
 ```typescript
 import { SparseSet } from 'ts-sparse-set';
 
-// Создаём новый SparseSet для чисел
+// Create a new SparseSet for numbers
 const set = new SparseSet<number>();
 
-// Добавляем элементы
+// Add elements
 set.add(10, 42);
 set.add(20, 100);
 
-// Проверяем наличие
+// Check existence
 console.log(set.has(10)); // true
 console.log(set.has(5));  // false
 
-// Получаем значение
+// Get element by ID
 console.log(set.get(20)); // 100
 
-// Перезаписываем значение
+// Overwrite existing value
 set.add(10, 50);
 console.log(set.get(10)); // 50
 
-// Удаляем элемент
+// Remove an element
 set.remove(20);
 console.log(set.has(20)); // false
 
-// Добавляем несколько элементов и проверяем плотность
+// Add multiple elements and check dense array integrity
 set.add(30, 300);
 set.add(40, 400);
 set.remove(10);
@@ -62,14 +62,14 @@ console.log(set.get(40)); // 400
   * **Constructor:** `new SparseSet<V>()`
   * **Methods:**
 
-    * `add(id: number, value: V): V` — добавляет новый элемент или обновляет существующий.
-    * `get(id: number): V | null` — возвращает элемент по ID или `null`.
-    * `has(id: number): boolean` — проверяет наличие элемента.
-    * `remove(id: number): void` — удаляет элемент и поддерживает плотность dense массива.
+    * `add(id: number, value: V): V` — adds a new element or updates an existing one.
+    * `get(id: number): V | null` — retrieves the element by ID or `null` if missing.
+    * `has(id: number): boolean` — checks if an element exists.
+    * `remove(id: number): void` — removes an element and keeps the dense array compact.
 
 #### Note
 
-SparseSet идеально подходит для ECS-сценариев, где сущности и компоненты идентифицируются числами. Эта структура не является обычным Map/Set и оптимизирована под плотные массивы с минимальной стоимостью операций.
+SparseSet is ideal for ECS scenarios where entities and components are identified by numeric IDs. It is not a general-purpose Map/Set and is optimized for dense arrays and minimal operation cost.
 
 ---
 
