@@ -71,6 +71,8 @@ console.log(set.get(40)); // 400
 
 SparseSet is ideal for ECS scenarios where entities and components are identified by numeric IDs. It is not a general-purpose Map/Set and is optimized for dense arrays and minimal operation cost.
 
+Good luck!
+
 ---
 
 Feel free to contribute, report issues, or suggest improvements on [GitHub](https://github.com/yazmeyaa/ts-sparse-set).
