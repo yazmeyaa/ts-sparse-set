@@ -59,7 +59,7 @@ bench
     })
     .add(`size() (x${LOOP_FACTOR})`, () => {
         for (let k = 0; k < LOOP_FACTOR; k++) {
-            setForGet.size();
+            setForGet.size;
         }
     })
     .add('clear() (on 1000 elements)', () => {
