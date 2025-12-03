@@ -96,6 +96,27 @@ console.log(set.size());        // 2
 
 ---
 
+## Benchmarks
+
+**Tested on:**  
+- CPU: AMD Ryzen 7 7700 (8-core, up to 5.4 GHz)  
+- RAM: 32 GB DDR5-5600  
+- OS: Windows 11 Pro  
+- Runtime: Node.js v24.11.1 (tsx)  
+- Set size: **1,000,000** entities
+
+| Operation                    | Throughput (ops/sec)       | Per-operation latency |
+|------------------------------|----------------------------|-----------------------|
+| `add()`                      | **30.0 – 31.0 million**    | ~32–34 ns             |
+| `has()`                      | **9.7 – 9.9 million**      | ~101–103 ns           |
+| `get()`                      | **7.6 – 7.7 million**      | ~130–132 ns           |
+| `remove()` (swap-remove)     | **13.0 – 13.9 million**    | ~72–77 ns             |
+| `ensure(id, factory)`        | **4.0 million**            | ~250 ns               |
+| `size()`                     | **>526 million**           | **~1.9 ns**           |
+| `forEach()` (1M elements)    | **191–193 passes/sec**     | **~5.2 ms**           |
+| `ids()` / `values()`         | **64–65 passes/sec**       | ~15.4–15.6 ms         |
+| Generator iteration          | **54–55 passes/sec**       | ~18–19 ms             |
+
 ## When to Use SparseSet
 
 SparseSet excels when:

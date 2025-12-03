@@ -15,6 +15,15 @@ export class SparseSet<V> {
   private dense: number[] = [];
   private data: V[] = [];
 
+  private growSparse(minId: number): void {
+    if (minId < this.sparse.length) return;
+
+    let newLen = this.sparse.length === 0 ? 1024 : this.sparse.length * 2;
+    while (newLen <= minId) newLen *= 2;
+
+    this.sparse.length = newLen;
+  }
+
   /**
    * Checks whether an item with the given id exists in the set.
    *
@@ -23,11 +32,7 @@ export class SparseSet<V> {
    */
   public has(id: number): boolean {
     const index = this.sparse[id];
-    return (
-      index !== undefined &&
-      index < this.dense.length &&
-      this.dense[index] === id
-    );
+    return index !== undefined && this.dense[index] === id;
   }
 
   /**
@@ -38,16 +43,10 @@ export class SparseSet<V> {
    */
   public get(id: number): V | null {
     const index = this.sparse[id];
-    if (
-      index === undefined ||
-      index >= this.dense.length ||
-      this.dense[index] !== id
-    ) {
-      return null;
-    }
-    return this.data[index];
+    return index !== undefined && this.dense[index] === id
+      ? this.data[index]
+      : null;
   }
-
   /**
    * Adds or updates an element with the specified id.
    * If the id already exists, its value is overwritten.
@@ -58,23 +57,17 @@ export class SparseSet<V> {
    */
   public add(id: number, value: V): V {
     const existing = this.sparse[id];
-    if (
-      existing !== undefined &&
-      existing < this.dense.length &&
-      this.dense[existing] === id
-    ) {
+    if (existing !== undefined && this.dense[existing] === id) {
       this.data[existing] = value;
       return value;
     }
 
     const index = this.dense.length;
+
     this.dense[index] = id;
     this.data[index] = value;
 
-    if (this.sparse.length <= id) {
-      this.sparse.length = id + 1;
-    }
-
+    this.growSparse(id);
     this.sparse[id] = index;
 
     return value;
@@ -88,13 +81,7 @@ export class SparseSet<V> {
    */
   public remove(id: number): void {
     const index = this.sparse[id];
-    if (
-      index === undefined ||
-      index >= this.dense.length ||
-      this.dense[index] !== id
-    ) {
-      return;
-    }
+    if (index === undefined || this.dense[index] !== id) return;
 
     const lastIndex = this.dense.length - 1;
     const lastId = this.dense[lastIndex];
@@ -130,7 +117,7 @@ export class SparseSet<V> {
    *
    * @returns Total element count.
    */
-  public size(): number {
+  public get size(): number {
     return this.dense.length;
   }
 
@@ -191,13 +178,21 @@ export class SparseSet<V> {
    * @returns The existing or newly created value.
    */
   public ensure(id: number, factory: () => V): V {
-    const index = this.sparse[id];
+    let index = this.sparse[id];
     if (index !== undefined && this.dense[index] === id) {
       return this.data[index];
     }
-    const v = factory();
-    this.add(id, v);
-    return v;
+
+    const value = factory();
+    index = this.dense.length;
+
+    this.dense[index] = id;
+    this.data[index] = value;
+
+    this.growSparse(id);
+    this.sparse[id] = index;
+
+    return value;
   }
 
   /**

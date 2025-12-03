@@ -126,14 +126,14 @@ describe("SparseSet", () => {
   });
 
   test("size returns correct number of elements", () => {
-    expect(set.size()).toBe(0);
+    expect(set.size).toBe(0);
 
     set.add(1, 10);
     set.add(2, 20);
-    expect(set.size()).toBe(2);
+    expect(set.size).toBe(2);
 
     set.remove(1);
-    expect(set.size()).toBe(1);
+    expect(set.size).toBe(1);
   });
 
   test("clear removes all elements", () => {
@@ -143,7 +143,7 @@ describe("SparseSet", () => {
 
     set.clear();
 
-    expect(set.size()).toBe(0);
+    expect(set.size).toBe(0);
     expect(set.has(1)).toBe(false);
     expect(set.has(2)).toBe(false);
     expect(set.has(3)).toBe(false);
@@ -226,5 +226,4 @@ describe("SparseSet", () => {
   test("tryGetIndex returns -1 for missing id", () => {
     expect(set.tryGetIndex(123)).toBe(-1);
   });
-
 });
