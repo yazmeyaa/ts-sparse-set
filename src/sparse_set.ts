@@ -15,6 +15,10 @@ export class SparseSet<V> {
   private dense: number[] = [];
   private data: V[] = [];
 
+  constructor(initialSize: number = 1024) {
+    this.growSparse(initialSize);
+  }
+
   private growSparse(minId: number): void {
     if (minId < this.sparse.length) return;
 
